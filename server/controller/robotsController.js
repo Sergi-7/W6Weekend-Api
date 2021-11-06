@@ -1,4 +1,4 @@
-// const debug = require("debug")("robots:controller");
+const debug = require("debug")("robots:controller");
 const Robot = require("../../database/models/robot");
 
 const getRobots = async (req, res) => {
@@ -36,8 +36,37 @@ const createRobot = async (req, res, next) => {
   }
 };
 
+const deleteRobotById = async (req, res, next) => {
+  try {
+    const { idRobot } = req.params;
+    console.log(req.params);
+    const deletedRobot = await Robot.findByIdAndDelete(idRobot);
+    res.json({ delete: deletedRobot });
+  } catch (error) {
+    error.code = 400;
+    error.message = "There was an error when attempting to delete a roboto";
+    next(error);
+  }
+};
+
+const updateRobot = async (req, res, next) => {
+  try {
+    const robot = req.body;
+    const { _id } = robot;
+    debug(_id);
+    const updatedRobot = await Robot.findByIdAndUpdate(_id, robot);
+    res.json(updatedRobot);
+  } catch (error) {
+    error.code = 400;
+    error.message = "There was an error when attempting to update a roboto";
+    next(error);
+  }
+};
+
 module.exports = {
   getRobots,
   getRobotById,
   createRobot,
+  deleteRobotById,
+  updateRobot,
 };
