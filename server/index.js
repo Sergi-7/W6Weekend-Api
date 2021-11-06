@@ -2,10 +2,14 @@ const chalk = require("chalk");
 const debug = require("debug")("robots:server");
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 const robotsRoutes = require("./routes/robotsRoutes");
 
 const app = express();
+
+app.use(cors());
+app.use(express.json());
 
 const initializeServer = (port) => {
   const server = app.listen(port, () => {
@@ -21,8 +25,6 @@ const initializeServer = (port) => {
 };
 
 app.use(morgan("dev"));
-app.use(express.json());
-
 app.use("/robots", robotsRoutes);
 
 app.use(notFoundErrorHandler);
