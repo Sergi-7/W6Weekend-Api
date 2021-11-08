@@ -10,14 +10,14 @@ const {
 
 const router = express.Router();
 
-router.get("/", auth, getRobots);
+router.get("/", getRobots);
 
-router.get("/:idRobot", auth, getRobotById);
+router.get("/:idRobot", getRobotById);
 
-router.post("/create", auth, createRobot);
+router.post("/create", createRobot);
 
-router.put("/update", auth, updateRobot);
+router.put("/update", updateRobot);
 
-router.delete("/delete/:idRobot", auth, deleteRobotById);
+router.delete("/delete/:idRobot", deleteRobotById);
 
 module.exports = router;
