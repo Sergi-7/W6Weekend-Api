@@ -12,13 +12,18 @@ const User = require("../../database/models/user");
 //   res.json(newUser);
 // };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
   const user = await User.findOne(username);
-  console.log(user);
-  const correctPassword = bcrypt.compare(password, user.password);
-  const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
-  res.json(accessToken);
+  const correctPassword = await bcrypt.compare(password, user.password);
+  if (correctPassword) {
+    const accessToken = jwt.sign(user.toJSON(), process.env.JWT_SECRET);
+    res.json(accessToken);
+  } else {
+    const error = new Error("Invalid Credentials");
+    error.code = 401;
+    next(error);
+  }
 };
 
 module.exports = loginUser;

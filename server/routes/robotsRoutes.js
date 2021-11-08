@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../middleware/index");
 const {
   getRobots,
   getRobotById,
@@ -9,7 +10,7 @@ const {
 
 const router = express.Router();
 
-router.get("/", getRobots);
+router.get("/", auth, getRobots);
 
 router.get("/:idRobot", getRobotById);
 
