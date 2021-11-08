@@ -3,6 +3,7 @@ const debug = require("debug")("robots:server");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const auth = require("./middleware/index");
 const { notFoundErrorHandler, generalErrorHandler } = require("./errors");
 const robotsRoutes = require("./routes/robotsRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -27,7 +28,7 @@ const initializeServer = (port) => {
 
 app.use(morgan("dev"));
 app.use("/users", userRoutes);
-app.use("/robots", robotsRoutes);
+app.use("/robots", auth, robotsRoutes);
 
 app.use(notFoundErrorHandler);
 app.use(generalErrorHandler);
