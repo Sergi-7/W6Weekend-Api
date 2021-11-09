@@ -1,5 +1,5 @@
 const express = require("express");
-const auth = require("../middleware/index");
+
 const {
   getRobots,
   getRobotById,
