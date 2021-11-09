@@ -8,14 +8,20 @@ const auth = (req, res, next) => {
     next(error);
   } else {
     const token = authHeader.split(" ")[1];
-    try {
-      const user = jwt.verify(token, process.env.JWT_SECRET);
-      req.username = user.username;
-      next();
-    } catch {
-      const error = new Error("Invalid Token");
+    if (!token) {
+      const error = new Error("Missing token");
       error.code = 401;
       next(error);
+    } else {
+      try {
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+        req.userId = user.id;
+        next();
+      } catch {
+        const error = new Error("Invalid Token");
+        error.code = 401;
+        next(error);
+      }
     }
   }
 };
