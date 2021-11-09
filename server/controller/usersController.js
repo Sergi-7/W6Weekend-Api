@@ -17,7 +17,7 @@ const loginUser = async (req, res, next) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username });
   if (!user) {
-    const error = new Error("Wrong credentials");
+    const error = new Error("User non existant");
     error.code = 401;
     next(error);
   } else {
